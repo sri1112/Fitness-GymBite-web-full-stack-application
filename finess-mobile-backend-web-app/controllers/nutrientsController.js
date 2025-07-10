@@ -1,11 +1,10 @@
-const Gym = require("../models/gymsModel");
+const Nutrient = require("../models/nutrientsModel");
 
 // ✅ Create
 exports.create = async (req, res) => {
   try {
-    const data = req.body;
-    await Gym.createGym(data);
-    res.json({ success: true, message: "Gym created" });
+    await Nutrient.createNutrient(req.body);
+    res.json({ success: true, message: "Nutrient created" });
   } catch (err) {
     console.error("Error in create:", err);
     res.status(500).json({ error: err.message });
@@ -15,8 +14,8 @@ exports.create = async (req, res) => {
 // ✅ Get All
 exports.getAll = async (req, res) => {
   try {
-    const gyms = await Gym.getAllGyms();
-    res.json(gyms);
+    const nutrients = await Nutrient.getAllNutrients();
+    res.json(nutrients);
   } catch (err) {
     console.error("Error in getAll:", err);
     res.status(500).json({ error: err.message });
@@ -26,12 +25,9 @@ exports.getAll = async (req, res) => {
 // ✅ Get By ID
 exports.getById = async (req, res) => {
   try {
-    const id = req.params.id;
-    const gym = await Gym.getGymById(id);
-    if (!gym) {
-      return res.status(404).json({ error: "Gym not found" });
-    }
-    res.json(gym);
+    const nutrient = await Nutrient.getNutrientById(req.params.id);
+    if (!nutrient) return res.status(404).json({ error: "Nutrient not found" });
+    res.json(nutrient);
   } catch (err) {
     console.error("Error in getById:", err);
     res.status(500).json({ error: err.message });
@@ -41,10 +37,8 @@ exports.getById = async (req, res) => {
 // ✅ Update
 exports.update = async (req, res) => {
   try {
-    const id = req.params.id;
-    const data = req.body;
-    await Gym.updateGym(id, data);
-    res.json({ success: true, message: "Gym updated" });
+    await Nutrient.updateNutrient(req.params.id, req.body);
+    res.json({ success: true, message: "Nutrient updated" });
   } catch (err) {
     console.error("Error in update:", err);
     res.status(500).json({ error: err.message });
@@ -54,11 +48,10 @@ exports.update = async (req, res) => {
 // ✅ Delete
 exports.delete = async (req, res) => {
   try {
-    const id = req.params.id;
-    await Gym.deleteGym(id);
-    res.json({ success: true, message: "Gym deleted" });
+    await Nutrient.deleteNutrient(req.params.id);
+    res.json({ success: true, message: "Nutrient deleted" });
   } catch (err) {
-    console.error("Error in remove:", err);
+    console.error("Error in delete:", err);
     res.status(500).json({ error: err.message });
   }
 };

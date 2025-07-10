@@ -1,62 +1,50 @@
-const Gym = require("../models/gymsModel");
+const MasterTable = require("../models/masterTableModel");
 
-// ✅ Create
 exports.create = async (req, res) => {
   try {
-    const data = req.body;
-    await Gym.createGym(data);
-    res.json({ success: true, message: "Gym created" });
+    await MasterTable.createEntry(req.body);
+    res.json({ success: true, message: "Entry created" });
   } catch (err) {
     console.error("Error in create:", err);
     res.status(500).json({ error: err.message });
   }
 };
 
-// ✅ Get All
 exports.getAll = async (req, res) => {
   try {
-    const gyms = await Gym.getAllGyms();
-    res.json(gyms);
+    const entries = await MasterTable.getAllEntries();
+    res.json(entries);
   } catch (err) {
     console.error("Error in getAll:", err);
     res.status(500).json({ error: err.message });
   }
 };
 
-// ✅ Get By ID
 exports.getById = async (req, res) => {
   try {
-    const id = req.params.id;
-    const gym = await Gym.getGymById(id);
-    if (!gym) {
-      return res.status(404).json({ error: "Gym not found" });
-    }
-    res.json(gym);
+    const entry = await MasterTable.getEntryById(req.params.id);
+    if (!entry) return res.status(404).json({ error: "Entry not found" });
+    res.json(entry);
   } catch (err) {
     console.error("Error in getById:", err);
     res.status(500).json({ error: err.message });
   }
 };
 
-// ✅ Update
 exports.update = async (req, res) => {
   try {
-    const id = req.params.id;
-    const data = req.body;
-    await Gym.updateGym(id, data);
-    res.json({ success: true, message: "Gym updated" });
+    await MasterTable.updateEntry(req.params.id, req.body);
+    res.json({ success: true, message: "Entry updated" });
   } catch (err) {
     console.error("Error in update:", err);
     res.status(500).json({ error: err.message });
   }
 };
 
-// ✅ Delete
 exports.delete = async (req, res) => {
   try {
-    const id = req.params.id;
-    await Gym.deleteGym(id);
-    res.json({ success: true, message: "Gym deleted" });
+    await MasterTable.deleteEntry(req.params.id);
+    res.json({ success: true, message: "Entry deleted" });
   } catch (err) {
     console.error("Error in remove:", err);
     res.status(500).json({ error: err.message });
